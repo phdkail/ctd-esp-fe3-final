@@ -1,18 +1,26 @@
-import React from "react";
 import Card from "../Components/Card";
-
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
+import {useDentistStates} from '../Components/utils/global.context'
+import Button from "../Components/Button";
 
 const Favs = () => {
 
+  const {state, dispatch} = useDentistStates();
+
   return (
-    <>
-      <h1>Dentists Favs</h1>
+    <div className="favs">
+      <h1>Favorites Dentists</h1>
       <div className="card-grid">
-        {/* este componente debe consumir los destacados del localStorage */}
-        {/* Deberan renderizar una Card por cada uno de ellos */}
+        {state.favs.length > 0 ? (
+            state.favs.map((dentist) => (
+              <Card dentist={dentist} key={dentist.id}/>
+          ))) : <h2>There are not favorites</h2>}
       </div>
-    </>
+      <div className="resetFavs">
+        {state.favs.length > 0 ? (
+          <Button onClick={()=>dispatch({type: "RESET_FAVS"})}>Reset favorites</Button>
+        ): null}
+      </div>
+    </div>
   );
 };
 
